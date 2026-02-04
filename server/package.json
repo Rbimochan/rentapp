@@ -6,9 +6,7 @@
     "build": "rimraf dist && npx tsc",
     "start": "npm run build && node dist/index.js",
     "dev": "npm run build && concurrently \"npx tsc -w\" \"nodemon --exec ts-node src/index.ts\"",
-    "seed": "ts-node prisma/seed.ts",
-    "prisma:generate": "prisma generate",
-    "postprisma:generate": "shx cp -r node_modules/.prisma/client/index.d.ts ../client/src/types/prismaTypes.d.ts"
+    "seed:oracle": "node ./scripts/seed-oracle.js"
   },
   "keywords": [],
   "author": "",
@@ -17,8 +15,6 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.740.0",
     "@aws-sdk/lib-storage": "^3.740.0",
-    "@prisma/client": "^6.3.0",
-    "@terraformer/wkt": "^2.2.1",
     "axios": "^1.7.9",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
@@ -28,7 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "prisma": "^6.3.0",
+    "oracledb": "^6.5.0",
     "uuid": "^11.0.5"
   },
   "devDependencies": {
@@ -37,6 +33,7 @@
     "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.13.0",
+    "@types/oracledb": "^6.10.1",
     "@types/terraformer__wkt": "^2.0.3",
     "@types/uuid": "^10.0.0",
     "concurrently": "^9.1.2",

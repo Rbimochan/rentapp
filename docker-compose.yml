@@ -1,0 +1,23 @@
+services:
+  server:
+    build:
+      context: ./server
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      ORACLE_USER: ${ORACLE_USER}
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD}
+      ORACLE_CONNECT_STRING: ${ORACLE_CONNECT_STRING}
+      AWS_REGION: ${AWS_REGION}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./new-client
+      args:
+        GEMINI_API_KEY: ${GEMINI_API_KEY}
+    ports:
+      - "3000:80"
+    restart: unless-stopped

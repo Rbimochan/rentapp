@@ -11,6 +11,7 @@ import managerRoutes from "./routes/managerRoutes";
 import propertyRoutes from "./routes/propertyRoutes";
 import leaseRoutes from "./routes/leaseRoutes";
 import applicationRoutes from "./routes/applicationRoutes";
+import { initOraclePool, closeOraclePool } from "./db/oracle";
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -36,6 +37,18 @@ app.use("/managers", authMiddleware(["manager"]), managerRoutes);
 
 /* SERVER */
 const port = Number(process.env.PORT) || 3002;
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Server running on port ${port}`);
+initOraclePool()
+  .then(() => {
+    app.listen(port, "0.0.0.0", () => {
+      console.log(`Server running on port ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Failed to initialize Oracle connection pool:", error);
+    process.exit(1);
+  });
+
+process.on("SIGTERM", async () => {
+  await closeOraclePool();
+  process.exit(0);
 });
